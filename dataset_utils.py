@@ -7,6 +7,7 @@ class DatasetUtils:
 
     @staticmethod
     def load_from_file(filename):
+        dataset = []
         translator = str.maketrans({p: ' ' for p in string.punctuation})
 
         with open(filename, 'r') as data_file:
@@ -17,7 +18,9 @@ class DatasetUtils:
                     0] == 'ham' else MessageType.spam
                 msg_text = line[1:]
 
-                yield msg_type, msg_text
+                dataset.append((msg_type, msg_text))
+        
+        return dataset
 
     @staticmethod
     def cross_validation_split(dataset, n_folds):
