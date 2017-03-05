@@ -9,6 +9,8 @@ def main(filename='data/SMSSpamCollection', n_folds=5):
 
     classifier = NaiveBayesClassifier()
 
+    results = []
+
     for test_set in dataset_folds:
         training_set = dataset_folds[:]
         training_set.remove(test_set)
@@ -36,6 +38,12 @@ def main(filename='data/SMSSpamCollection', n_folds=5):
                 else:
                     false_negative += 1
 
+        print("True positives: {}".format(true_positive))
+        print("True negatives: {}".format(true_negative))
+        print("False positives: {}".format(false_positive))
+        print("False negatives: {}".format(false_negative))
+        print()
+
         accuracy = (true_positive + true_negative) / len(test_set)
         precision = true_positive / (true_positive + false_positive)
         recall = true_positive / (true_positive + false_negative)
@@ -46,6 +54,11 @@ def main(filename='data/SMSSpamCollection', n_folds=5):
         print("Recall: {}".format(recall))
         print("F1: {}".format(f_one))
         print()
+
+        results.append((accuracy, precision, recall, f_one))
+
+    mean_accuracy = sum([r[0] for r in results]) / len(results)
+    print("Mean accuracy: {}".format(mean_accuracy))
 
 
 if __name__ == '__main__':
